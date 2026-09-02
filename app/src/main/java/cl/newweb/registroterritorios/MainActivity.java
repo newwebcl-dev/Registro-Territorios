@@ -1,9 +1,12 @@
 package cl.newweb.registroterritorios;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
@@ -18,6 +21,8 @@ public class MainActivity extends Activity {
     private ValueCallback<Uri[]> fileUploadCallback;
 
     private static final int FILE_CHOOSER_REQUEST_CODE = 1001;
+    private static final int NOTIFICATION_PERMISSION_REQUEST_CODE = 1002;
+
     private static final String WEBSITE_URL =
             "https://territorios.newweb.cl/";
 
@@ -25,6 +30,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        solicitarPermisoNotificaciones();
 
         webView = new WebView(this);
         setContentView(webView);
@@ -42,7 +49,7 @@ public class MainActivity extends Activity {
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
 
-        if (android.os.Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             cookieManager.setAcceptThirdPartyCookies(webView, true);
         }
 
@@ -133,12 +140,27 @@ public class MainActivity extends Activity {
         );
 
         if (savedInstanceState == null) {
-
             webView.loadUrl(WEBSITE_URL);
-
         } else {
-
             webView.restoreState(savedInstanceState);
+        }
+    }
+
+    private void solicitarPermisoNotificaciones() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            if (checkSelfPermission(
+                    Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED) {
+
+                requestPermissions(
+                        new String[]{
+                                Manifest.permission.POST_NOTIFICATIONS
+                        },
+                        NOTIFICATION_PERMISSION_REQUEST_CODE
+                );
+            }
         }
     }
 
@@ -146,11 +168,8 @@ public class MainActivity extends Activity {
     public void onBackPressed() {
 
         if (webView != null && webView.canGoBack()) {
-
             webView.goBack();
-
         } else {
-
             super.onBackPressed();
         }
     }
