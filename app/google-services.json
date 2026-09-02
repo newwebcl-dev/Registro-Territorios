@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "77977169945",
+    "project_id": "prueba-522c9",
+    "storage_bucket": "prueba-522c9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77977169945:android:c4b884ee18808be023ba88",
+        "android_client_info": {
+          "package_name": "cl.newweb.registroterritorios"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBF2E_5ZdnTJ8r8BnrKmE3KQudjA79jiI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
